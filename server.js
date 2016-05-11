@@ -3,8 +3,8 @@
 **/
 var express = require('express');
 var app = express();
+var server = require('http').Server(app);
 
-// wwwƒfƒBƒŒƒNƒgƒŠ‚ðÃ“Iƒtƒ@ƒCƒ‹ƒfƒBƒŒƒNƒgƒŠ‚Æ‚µ‚Ä“o˜^
+// wwwãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’é™çš„ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã¨ã—ã¦ç™»éŒ²
 app.use(express.static('www'));
-
-var server = app.listen(8080);
+server.listen(process.env.PORT || 3000);
