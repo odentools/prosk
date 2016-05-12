@@ -23,8 +23,10 @@ app.use(basicAuth(function (req_user, req_pw) {
 	return ((Object.keys(basicAuthUsers).length == 0) || (basicAuthUsers[req_user] && basicAuthUsers[req_user] === req_pw));
 }));
 
-// wwwディレクトリを静的ファイルディレクトリとして登録
+// bower_components & wwwディレクトリを静的ファイルディレクトリとして登録
+app.use(express.static('bower_components'));
 app.use(express.static('www'));
+
 server.listen(process.env.PORT || 3000);
 
 

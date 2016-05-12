@@ -1,5 +1,5 @@
 $(function () {
-	var droppable = $("#dragable");
+	var droppable = $("#droppable");
 
 	if (!window.FileReader) {
 		console.log("File API がサポートされていません。");
@@ -23,23 +23,23 @@ $(function () {
 		var fileReader = new FileReader();
 
 		fileReader.onload = function (event) {
-		
+
 			var zipFile = new JSZip(event.target.result);
-			
+
 			//zipFileLoaded["pde/HT14A039.pde"]
-			
+
 			console.log(zipFile);
-			
+
 			var postList = new Object();
-			
-			
+
+
 			for ( var pdeFileName in zipFile.files) {
-			
+
 				//console.log(pdeFileName);
-				
+
 				var postData = new Object();
 
-				
+
 				postData.userId = pdeFileName.substr(0,8);
 				postData.userName = pdeFileName.split("_")[0];
 				postData.content = zipFile.files[pdeFileName].asText();
@@ -59,13 +59,13 @@ $(function () {
 						redirect_url = redirect_url + (location.search ? '&' : '?') + referrer;
 					}
 					location.href = redirect_url;
-					
+
 				}
 			});
 		}
 
 		fileReader.readAsArrayBuffer(file);
-		
+
 		event.preventDefault();
 		event.stopPropagation();
 

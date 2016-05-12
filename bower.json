@@ -1,0 +1,25 @@
+{
+  "name": "prosk",
+  "version": "1.0.0",
+  "homepage": "https://github.com/odentools/prosk",
+  "authors": [
+    "OdenTools"
+  ],
+  "moduleType": [
+    "es6",
+    "globals",
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jszip": "2.6",
+    "skyblue": "~1.0.4"
+  }
+}

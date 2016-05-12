@@ -2,6 +2,9 @@
 logs
 *.log
 
+# Bower components
+bower_components/
+
 # Runtime data
 pids
 *.pid
