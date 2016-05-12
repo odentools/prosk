@@ -19,7 +19,6 @@ if (process.env['BASIC_AUTH']) {
 		basicAuthUsers[chunk_[0]] = chunk_[1];
 	});
 }
-console.log(Object.keys(basicAuthUsers).length);
 app.use(basicAuth(function (req_user, req_pw) {
 	return ((Object.keys(basicAuthUsers).length == 0) || (basicAuthUsers[req_user] && basicAuthUsers[req_user] === req_pw));
 }));
