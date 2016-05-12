@@ -1,9 +1,10 @@
 FROM node:5-wheezy
 MAINTAINER OECU VMLab
 
-ADD . /
+ADD . /var/www
+WORKDIR /var/www
 
-RUN npm install --production
+RUN npm install --unsafe-perm --production
 
 EXPOSE 8080
 ENTRYPOINT ["npm", "start"]
