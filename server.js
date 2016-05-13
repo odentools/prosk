@@ -32,6 +32,23 @@ server.listen(process.env.PORT || 3000);
 
 var pdeListArray = new Array();
 
+app.get(/^\/(\d+)\/*$/, function (req, res){
+
+	if (!req.url.match(/\/$/)) {
+		res.redirect(req.url + '/');
+		return;
+	}
+
+	var id = req.params[0];
+	if (pdeListArray.length <= id || !pdeListArray[id]) {
+		res.status(404).send('指定されたIDのリストは存在しません');
+		return;
+	}
+
+	res.sendFile(__dirname + '/viewer/index.html');
+
+});
+
 app.get(/(\d+)\/pde\/([A-Z]{2}\d{2}[A-Z]\d{3})\.pde/, function(req, res){
 
 	try{
@@ -71,10 +88,8 @@ app.post('/pdeList', function(req, res){
 
 	pdeListArray.push(req.body);
 
-	app.use('/'+(pdeListArray.length-1),express.static('viewer'));
-
 	res.writeHead(200, { "Content-Type": "text/plain" });
-	res.write(""+(pdeListArray.length-1));
+	res.write((pdeListArray.length-1) + '/');
 	res.end();
 
 });
