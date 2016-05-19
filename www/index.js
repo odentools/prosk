@@ -18,27 +18,22 @@ $(function () {
 	var handleDroppedFile = function (event) {
 		// ファイルは複数ドロップされる可能性がありますが, ここでは 1 つ目のファイルを扱います.
 		var file = event.originalEvent.dataTransfer.files[0];
-		var type = file.type;
+		
+		var fileName = file.name.split(".");
+		var fileExtention = fileName[fileName.length - 1].toLowerCase();
 
-		var fileReader = new FileReader();
+		var zipFileReader = new FileReader();
+		var pdeFileReader = new FileReader();
 
-		fileReader.onload = function (event) {
+		zipFileReader.onload = function (event) {
 
 			var zipFile = new JSZip(event.target.result);
 
-			//zipFileLoaded["pde/HT14A039.pde"]
-
-			console.log(zipFile);
-
 			var postList = new Object();
-
 
 			for ( var pdeFileName in zipFile.files) {
 
-				//console.log(pdeFileName);
-
 				var postData = new Object();
-
 
 				postData.userId = pdeFileName.substr(0,8);
 				postData.userName = pdeFileName.split("_")[0];
@@ -53,7 +48,7 @@ $(function () {
 				data:JSON.stringify(postList),
 				contentType: "application/json",
 				success: function(data) {
-					var redirect_url = "/" + data + location.search;
+					var redirect_url = "/" + data+ "/" + location.search;
 					if (document.referrer) {
 						var referrer = "referrer=" + encodeURIComponent(document.referrer);
 						redirect_url = redirect_url + (location.search ? '&' : '?') + referrer;
@@ -63,8 +58,37 @@ $(function () {
 				}
 			});
 		}
+		
+		pdeFileReader.onload = function (event) {
 
-		fileReader.readAsArrayBuffer(file);
+			var postData = new Object();
+			postData.content = event.target.result;
+						
+			$.ajax({
+				url:"/pdeFile",
+				type:"post",
+				data:JSON.stringify(postData),
+				contentType: "application/json",
+				success: function(data) {
+					var redirect_url = "/pde/" + data + ".pde" + location.search;
+					if (document.referrer) {
+						var referrer = "referrer=" + encodeURIComponent(document.referrer);
+						redirect_url = redirect_url + (location.search ? '&' : '?') + referrer;
+					}
+					location.href = redirect_url;
+
+				}
+			});
+			
+			
+			
+		}
+		
+		
+		if(fileExtention=="zip")
+			zipFileReader.readAsArrayBuffer(file);
+		if(fileExtention=="pde")
+			pdeFileReader.readAsText(file);
 
 		event.preventDefault();
 		event.stopPropagation();
