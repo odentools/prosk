@@ -47,21 +47,31 @@ app.get(/^\/(\d+)\/?$/, function (req, res){
 	}
 
 	res.sendFile(__dirname + '/viewer/index.html');
-
 });
 
-app.get(/^(\d+)\/pde\/([A-Z]{2}\d{2}[A-Z]\d{3})\.pde$/, function(req, res){
+app.get(/^\/(\d+)\/pde.html\/?$/, function (req, res){
+
+	var id = req.params[0];
+	if (pdeListArray.length <= id || !pdeListArray[id]) {
+		res.status(404).send('指定されたIDのリストは存在しません');
+		return;
+	}
+
+	res.sendFile(__dirname + '/viewer/pde.html');
+});
+
+
+app.get(/^\/(\d+)\/pde\/([A-Z]{2}\d{2}[A-Z]\d{3})\.pde$/, function(req, res){
 
 	try{
-		var m = req.url.match(/^(\d+)\/pde\/([A-Z]{2}\d{2}[A-Z]\d{3}).pde$/);
+		var m = req.url.match(/^\/(\d+)\/pde\/([A-Z]{2}\d{2}[A-Z]\d{3}).pde$/);
 		var no = m[1];
 		var id = m[2];
-		res.send(pdeListArray[no][id].content);
+		res.send(pdeListArray[no][id].	content);
 	}catch(e){
 		console.log("error");
 		res.send("e");
 	}
-
 
 });
 
@@ -75,7 +85,6 @@ app.get(/^\/pde\/(\d+).pde$/, function(req, res){
 		console.log("error");
 		res.send("e");
 	}
-
 
 });
 

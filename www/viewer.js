@@ -2,11 +2,13 @@ var pde = {};
 
 $(document).ready(function () {
 
-	
-
 	paintStudents();
-
+	
+	openFrameAll();
 });
+
+
+
 
 function aryMatch(ary1, ary2) {
 	var matchCount = 0;
@@ -27,6 +29,7 @@ function aryMatch(ary1, ary2) {
 }
 
 function copyCheck() {
+	
 	var functionList = $("#functionList").val().split(",");
 	for (var i = 0, leni = functionList.length; i < leni; i++) {
 		functionList[i] = functionList[i].replace(/ /g, "");
@@ -80,7 +83,7 @@ function paintStudents() {
 
 	$("#StudentTable table").empty();
 	for (var i = 0, leni = studentList.length; i < leni; i++) {
-		$("#StudentTable table").append($('<tr>').append('<td>' + studentList[i].id + '<br> ' + studentList[i].name + '<td>' + "<canvas data-src=\"./pde/" + studentList[i].id + ".pde\"" + ' width="100px"></canvas>' + '<td>' + "<textarea id=\"" + studentList[i].id + '-txt' + "\" cols=40 rows=20 disabled></textarea>" + '<td>' + "<textarea id=\"" + studentList[i].id + '-count' + "\" cols=40 rows=20 disabled></textarea>"));
+		$("#StudentTable table").append($('<tr>').append('<td>' + studentList[i].id + '<br>' + studentList[i].name + '<br>' + '<button type="button" onclick="openFrame(\''+studentList[i].id+'\')">開く/再読み込み</button><button type="button" onclick="closeFrame(\''+studentList[i].id+'\')">閉じる</button>' + '<td>' + '<iframe height="0px" width="0px" id="'+ studentList[i].id + '"></iframe>' + '<td>' + "<textarea id=\"" + studentList[i].id + '-txt' + "\" cols=40 rows=20 disabled></textarea>" + '<td>' + "<textarea id=\"" + studentList[i].id + '-count' + "\" cols=40 rows=20 disabled></textarea>"));
 		var forCount = i;
 		(function (i) {
 
@@ -110,4 +113,30 @@ function paintStudents() {
 	}
 
 
+}
+
+
+function openFrame(id){
+	$("#"+id)[0].src= "pde.html?pde=" + id;
+	$("#"+id)[0].width = "500px";
+	$("#"+id)[0].height = "500px";
+}
+
+function closeFrame(id){
+	$("#"+id)[0].src= "";
+	$("#"+id)[0].width = "0px";
+	$("#"+id)[0].height = "0px";
+}
+
+
+function openFrameAll(){
+	for (var i = 0, leni = studentList.length; i < leni; i++) {
+		openFrame(studentList[i].id);
+	}
+}
+
+function closeFrameAll(){
+	for (var i = 0, leni = studentList.length; i < leni; i++) {
+		closeFrame(studentList[i].id);
+	}
 }

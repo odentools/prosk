@@ -1,0 +1,63 @@
+<html>
+
+<head>
+	<script src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.4.16/processing.js'></script>
+	<script>
+		$(document).ready(function() {
+		/* URLを解析してGetを取得する関数 */
+		function GetQueryString() {
+			var result = {};
+			if( 1 < window.location.search.length ) {
+				// 最初の1文字 (?記号) を除いた文字列を取得する
+				var query = window.location.search.substring( 1 );
+				// クエリの区切り記号 (&) で文字列を配列に分割する
+				var parameters = query.split( '&' );
+				for( var i = 0; i < parameters.length; i++ ) {
+					// パラメータ名とパラメータ値に分割する
+					var element = parameters[ i ].split( '=' );
+					var paramName = decodeURIComponent( element[ 0 ] );
+					var paramValue = decodeURIComponent( element[ 1 ] );
+					// パラメータ名をキーとして連想配列に追加する
+					result[ paramName ] = paramValue;
+				}
+			}
+			return result;
+		}
+		var query = GetQueryString();
+		// ToDo:  "http://localhost:3000/0/pde/"+query['pdeName'] から取れるように
+		$('canvas').attr('data-processing-sources', "pde/"+query['pde']+".pde");
+		var droppable = $('canvas');
+		var cancelEvent = function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			return false;
+		}
+		droppable.bind("dragenter", cancelEvent);
+		droppable.bind("dragover", cancelEvent);
+		droppable.bind("drop", cancelEvent);
+		
+		  $('iframe').load(function(){
+    if (typeof $(this).attr('height') == 'undefined') {
+      $(this).height(this.contentWindow.document.documentElement.scrollHeight+10);
+    }
+  });
+  $('iframe').triggerHandler('load');
+		
+		
+	});
+	</script>
+
+	<style>
+		body {
+			margin: 0px;
+		}
+	</style>
+
+</head>
+
+<body>
+	<canvas data-processing-sources=''></canvas>
+</body>
+
+</html>
