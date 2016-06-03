@@ -2,7 +2,7 @@
   "name": "prosk",
   "version": "1.0.0",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node server.js",
     "postinstall": "node_modules/bower/bin/bower --allow-root install"
   },
   "dependencies": {
